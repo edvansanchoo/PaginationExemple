@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    List<string> names = ViewBag.Names;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    <!-- Campo de busca -->
+    <form method="get" action="@Url.Action("Index")">
+        <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Buscar nome..." />
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Names</th>
+        </tr>
+        @foreach (var name in names)
+        {
+            <tr>
+                <td>@name</td>
+            </tr>
+        }
+    </table>
+
+    <!-- Mensagem se não houver resultados -->
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div>@ViewBag.Message</div>
+    }
+
+    <!-- Navegação para a paginação -->
+    <div>
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Index", new { searchTerm = ViewBag.SearchTerm, page = ViewBag.CurrentPage - 1 })">Anterior</a>
+        }
+
+        Página @ViewBag.CurrentPage de @ViewBag.TotalPages
+
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="@Url.Action("Index", new { searchTerm = ViewBag.SearchTerm, page = ViewBag.CurrentPage + 1 })">Próxima</a>
+        }
+    </div>
+</div>
